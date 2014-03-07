@@ -2,3 +2,11 @@
 *.pot
 *.pyc
 local_settings.py
+
+# Web Project
+.idea
+node_modules
+dist
+.tmp
+.sass-cache
+app/bower_components
