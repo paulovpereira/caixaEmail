@@ -1,0 +1,69 @@
+<header class="header">
+  <h1 class="text-muted" translate="app.titulo"></h1>
+</header>
+
+<main class="mainContainer">
+  <section>
+    <form ng-submit="filtrar()" class="formFiltroEmail">
+      <input class="form-control filtroEmail" placeholder="{{'app.pesquisa' | translate}}" ng-model="model.filtro">
+      <button type="submit" class="btn btn-primary">
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
+      <a ng-click="toggleHoje()" ng-class="{active: model.hoje}" class="btn btn-default" title="{{'app.hoje' | translate}}">
+        <i class="glyphicon glyphicon-calendar"></i>
+      </a>
+      <a ng-click="limparFiltros()" class="btn btn-default" title="{{'app.limparFiltros' | translate}}">
+        <i class="glyphicon glyphicon-remove"></i>
+      </a>
+    </form>
+    <nav ng-if="model.paginacao.possuiElementos()" class="paginacao">
+      <ul class="paginacaoEmails pagination pagination-sm">
+        <li><a ng-click="trocarPagina(1)">&laquo;</a></li>
+        <li ng-repeat="pagina in model.paginacao.getTotalPaginas() track by $index" ng-class="{active: model.paginacao.paginaSelecionada($index + 1)}">
+          <a ng-click="trocarPagina($index + 1)" ng-bind="$index + 1"></a>
+        </li>
+        <li><a ng-click="trocarPagina(model.paginacao.totalPaginas)">&raquo;</a></li>
+      </ul>
+      <p class="intervaloPaginacao">
+        <strong ng-bind="model.paginacao.getIntervaloPagina()"></strong>
+        <span translate="app.de"></span>
+        <strong ng-bind="model.paginacao.totalElementos"></strong>
+      </p>
+    </nav>
+    <table ng-if="model.paginacao.possuiElementos()" spinner="model.controle.conteudoCarregando" class="table table-striped table-hover tabelaEmails">
+      <thead>
+        <tr>
+          <th class="tituloColNome" ng-click="ordenarPor('nome')">
+            <span translate="caixaEmail.colNome"></span>
+            <i ng-show="ordenacaoSelecionada('nome')" class="glyphicon"
+               ng-class="{'glyphicon-arrow-down': model.ordenacao.tipoDecrescente(), 'glyphicon-arrow-up': model.ordenacao.tipoCrescente()}"></i>
+          </th>
+          <th class="tituloColAssunto" ng-click="ordenarPor('assunto')">
+            <span translate="caixaEmail.colAssunto"></span>
+            <i ng-show="ordenacaoSelecionada('assunto')" class="glyphicon"
+               ng-class="{'glyphicon-arrow-down': model.ordenacao.tipoDecrescente(), 'glyphicon-arrow-up': model.ordenacao.tipoCrescente()}"></i>
+          </th>
+          <th class="tituloColDataEnvio" ng-click="ordenarPor('data_envio')">
+            <span translate="caixaEmail.colDataEnvio"></span>
+            <i ng-show="ordenacaoSelecionada('data_envio')" class="glyphicon"
+               ng-class="{'glyphicon-arrow-down': model.ordenacao.tipoDecrescente(), 'glyphicon-arrow-up': model.ordenacao.tipoCrescente()}"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="email in model.emails">
+          <td ng-bind="email.nome"></td>
+          <td ng-bind="email.assunto"></td>
+          <td ng-bind="email.dataEnvio | dataEmail"></td>
+        </tr>
+    </table>
+    <p ng-hide="model.paginacao.possuiElementos()" class="alert alert-warning" translate="mensagem.nenhumResultadoEncontrado"></p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>
+    <span translate="app.rodape"></span>
+    <a href="http://angularjs.org/" translate="app.linkAngular"></a>
+  </p>
+</footer>
